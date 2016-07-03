@@ -1,0 +1,27 @@
+{
+    "author": "theblackhole",
+    "dependencies": {},
+    "keywords": [],
+    "name": "inceptionface",
+    "pebble": {
+        "capabilities": [
+            ""
+        ],
+        "displayName": "InceptionFace",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "native",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "chalk"
+        ],
+        "uuid": "4a55b44e-dc96-4a0c-8dfe-6c12ff69ae6b",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "0.1.0"
+}
