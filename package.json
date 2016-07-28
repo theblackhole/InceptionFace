@@ -12,7 +12,25 @@
         "messageKeys": [],
         "projectType": "native",
         "resources": {
-            "media": []
+            "media": [
+                {
+                    "file": "images/maze1.png",
+                    "name": "MAZE_1",
+                    "targetPlatforms": [
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "characterRegex": "[0-9:. ]",
+                    "file": "fonts/Symtext.ttf",
+                    "name": "SYMTEXT_36",
+                    "targetPlatforms": [
+                        "chalk"
+                    ],
+                    "type": "font"
+                }
+            ]
         },
         "sdkVersion": "3",
         "targetPlatforms": [

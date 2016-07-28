@@ -3,6 +3,11 @@
 static Window *s_main_window;
 static TextLayer *s_time_layer;
 
+static BitmapLayer *s_background_layer;
+static GBitmap *s_background_bitmap;
+
+static GFont s_time_font;
+
 static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
@@ -25,17 +30,33 @@ static void main_window_load(Window *window) {
   // Get information about the Window
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
+  
+  // Create GBitmap
+  s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_MAZE_1);
+
+  // Create BitmapLayer to display the GBitmap
+  s_background_layer = bitmap_layer_create(bounds);
+
+  // Set the bitmap onto the layer and add to the window
+  bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+  layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
 
   // Create the TextLayer with specific bounds
   s_time_layer = text_layer_create(
-      GRect(0, PBL_IF_ROUND_ELSE(58, 52), bounds.size.w, 50));
+      GRect(2, PBL_IF_ROUND_ELSE(68, 52), bounds.size.w, 54));
 
   // Improve the layout to be more like a watchface
-  text_layer_set_background_color(s_time_layer, GColorClear);
-  text_layer_set_text_color(s_time_layer, GColorBlack);
-  text_layer_set_text(s_time_layer, "00:00");
-  text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
+  text_layer_set_background_color(s_time_layer, GColorBlack);
+  text_layer_set_text_color(s_time_layer, GColorWhite);
+  //text_layer_set_text(s_time_layer, "00:00");
+  //text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+  
+  // Create GFont
+  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_SYMTEXT_36));
+
+  // Apply to TextLayer
+  text_layer_set_font(s_time_layer, s_time_font);
 
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
@@ -44,12 +65,24 @@ static void main_window_load(Window *window) {
 static void main_window_unload(Window *window) {
   // Destroy TextLayer
   text_layer_destroy(s_time_layer);
+  
+  // Unload GFont
+  fonts_unload_custom_font(s_time_font);
+  
+  // Destroy GBitmap
+  gbitmap_destroy(s_background_bitmap);
+
+  // Destroy BitmapLayer
+  bitmap_layer_destroy(s_background_layer);
 }
 
 
 static void init() {
   // Create main Window element and assign to pointer
   s_main_window = window_create();
+  
+  // Set the background color
+  window_set_background_color(s_main_window, GColorBlack);
 
   // Set handlers to manage the elements inside the Window
   window_set_window_handlers(s_main_window, (WindowHandlers) {
